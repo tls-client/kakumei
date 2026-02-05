@@ -7,7 +7,12 @@ from scraper import fetch_servers
 from webserver import start_webserver
 
 TOKEN = os.getenv("DISCORD_TOKEN")
-CHANNEL_ID = int(os.getenv("CHANNEL_ID"))
+CHANNEL_ID = os.getenv("CHANNEL_ID")
+
+if not TOKEN or not CHANNEL_ID:
+    raise ValueError("環境変数 DISCORD_TOKEN または CHANNEL_ID が未設定")
+
+CHANNEL_ID = int(CHANNEL_ID)
 
 POSTED_FILE = "posted.json"
 
