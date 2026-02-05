@@ -1,19 +1,23 @@
-from fastapi import FastAPI
+import os
 import threading
 import uvicorn
+from fastapi import FastAPI, Response
 
 app = FastAPI()
 
-@app.get("/")
+@app.api_route("/", methods=["GET", "HEAD"])
 def root():
-    return {"status": "running"}
+    return Response(content="running", media_type="text/plain")
 
-@app.get("/health")
+@app.api_route("/health", methods=["GET", "HEAD"])
 def health():
-    return {"status": "ok"}
+    return Response(content="ok", media_type="text/plain")
+
 
 def run():
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run(app, host="0.0.0.0", port=port)
+
 
 def start_webserver():
     thread = threading.Thread(target=run)
