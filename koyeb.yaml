@@ -28,4 +28,4 @@ services:
     timeout_seconds: 10
     healthy_threshold: 2
     unhealthy_threshold: 3
-  run_command: node health-server.js
+  run_command: node simple-server.js

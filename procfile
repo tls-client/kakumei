@@ -1,1 +1,1 @@
-web: node health-server.js
+web: node simple-server.js
