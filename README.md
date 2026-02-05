@@ -1,4 +1,4 @@
-# Disboard Discord Scraper
+# Disboard Scraper
 
 Disboard.orgからDiscordサーバーの招待リンクを自動でスクレイピングし、指定したDiscordサーバーに送信するツールです。
 
