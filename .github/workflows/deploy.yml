@@ -1,0 +1,47 @@
+name: Deploy to Koyeb
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Login to Koyeb
+      uses: koyeb/action/login@v1
+      with:
+        api_token: ${{ secrets.KOYEB_API_TOKEN }}
+        
+    - name: Deploy to Koyeb
+      uses: koyeb/action/deploy@v1
+      with:
+        service_name: discord-scraper
+        dockerfile_path: ./Dockerfile
+        port: 3000
+        health_check_path: /health
+        regions: fra,par
+        instance_type: nano
+        min_instances: 1
+        max_instances: 1
+        env: |
+          NODE_ENV=production
+          PORT=3000
+          DISCORD_BOT_TOKEN=${{ secrets.DISCORD_BOT_TOKEN }}
+          DISCORD_WEBHOOK_URL=${{ secrets.DISCORD_WEBHOOK_URL }}
+          TARGET_CHANNEL_ID=${{ secrets.TARGET_CHANNEL_ID }}
+          SCRAPE_INTERVAL_MINUTES=30

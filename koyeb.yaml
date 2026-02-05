@@ -1,0 +1,30 @@
+name: discord-scraper
+services:
+- name: discord-scraper
+  source_dir: /
+  dockerfile_path: ./Dockerfile
+  docker_build_context: ./
+  ports:
+  - port: 3000
+    protocol: http
+  env:
+  - key: NODE_ENV
+    value: production
+  - key: PORT
+    value: "3000"
+  regions:
+  - fra
+  - par
+  instance_type: nano
+  min_instances: 1
+  max_instances: 1
+  routes:
+  - path: /
+    port: 3000
+  health_check:
+    http_path: /health
+    grace_period_seconds: 30
+    check_interval_seconds: 30
+    timeout_seconds: 10
+    healthy_threshold: 2
+    unhealthy_threshold: 3
