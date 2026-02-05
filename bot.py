@@ -9,7 +9,7 @@ from webserver import start_webserver
 TOKEN = os.getenv("DISCORD_TOKEN")
 CHANNEL_ID = int(os.getenv("CHANNEL_ID"))
 
-JSON_URL = "https://raw.githubusercontent.com/あなたのユーザー名/あなたのリポジトリ名/main/servers.json"
+JSON_URL = "https://raw.githubusercontent.com/tls-client/kakumei/main/servers.json"
 
 POSTED_FILE = "posted.json"
 
