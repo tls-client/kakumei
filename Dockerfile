@@ -1,11 +1,10 @@
-FROM node:18
+FROM python:3.11-slim
 
 WORKDIR /app
 
-COPY app/ .
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-RUN npm install
+COPY . .
 
-EXPOSE 3000
-
-CMD ["node", "main.mjs"]
+CMD ["python", "bot.py"]
