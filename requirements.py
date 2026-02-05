@@ -1,0 +1,10 @@
+discord.py
+requests
+beautifulsoup4
+fastapi
+uvicorn
+discord.py
+requests
+beautifulsoup4
+fastapi
+uvicorn
