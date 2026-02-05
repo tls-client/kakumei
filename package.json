@@ -2,10 +2,10 @@
   "name": "discord-invite-scraper",
   "version": "1.0.0",
   "description": "Discord invite link scraper and auto sender with Koyeb deployment",
-  "main": "index.js",
+  "main": "simple-server.js",
   "scripts": {
-    "start": "node health-server.js",
-    "dev": "nodemon health-server.js",
+    "start": "node simple-server.js",
+    "dev": "nodemon simple-server.js",
     "scrape": "node index.js --once",
     "build": "echo 'Build complete'"
   },

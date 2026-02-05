@@ -1,0 +1,24 @@
+{
+  "name": "discord-scraper",
+  "description": "Discord invite link scraper",
+  "keywords": ["discord", "scraper", "automation"],
+  "website": "https://github.com/tls-client/kakumei",
+  "repository": "https://github.com/tls-client/kakumei",
+  "logo": "https://nodejs.org/static/images/logo-hexagon-card.png",
+  "success_url": "/",
+  "env": {
+    "NODE_ENV": {
+      "description": "Node environment",
+      "value": "production"
+    },
+    "PORT": {
+      "description": "Port for web server",
+      "value": "3000"
+    }
+  },
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ]
+}
