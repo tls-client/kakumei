@@ -1,49 +1,53 @@
 import requests
 from bs4 import BeautifulSoup
-import time
 
-BASE = "https://disboard.org"
-LIST_URL = "https://disboard.org/ja/servers?sort=updated"
-HEADERS = {"User-Agent": "Mozilla/5.0"}
+URL = "https://disboard.org/ja/servers?sort=updated"
+HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+}
 
 def fetch_servers():
-    res = requests.get(LIST_URL, headers=HEADERS, timeout=10)
+    try:
+        res = requests.get(URL, headers=HEADERS, timeout=15)
+        res.raise_for_status()
+    except Exception as e:
+        print("Request failed:", e)
+        return []
+
     soup = BeautifulSoup(res.text, "html.parser")
 
-    cards = soup.select(".server-card")[:5]
+    cards = soup.select("div.server-card, div[class*='server'], div[class*='card']")
+    print("Fetched cards:", len(cards))
+
     servers = []
 
-    for card in cards:
-        name = card.select_one(".server-name")
-        desc = card.select_one(".server-description")
-        tags = card.select(".tag")
-
-        detail_link = card.select_one("a.server-card")
-        if not detail_link:
-            continue
-
-        detail_url = BASE + detail_link["href"]
-
+    for card in cards[:15]:
         try:
-            detail_res = requests.get(detail_url, headers=HEADERS, timeout=10)
-            detail_soup = BeautifulSoup(detail_res.text, "html.parser")
-            invite_btn = detail_soup.select_one("a.join-server-button")
-            if not invite_btn:
+            name_tag = card.select_one("div.server-name, span.server-name, h3")
+            desc_tag = card.select_one("div.server-description, div.description")
+            invite_tag = card.find("a", href=True)
+
+            if not invite_tag:
                 continue
 
-            invite = invite_btn["href"]
+            href = invite_tag["href"]
+
+            if "/server/" not in href and "discord.gg" not in href:
+                continue
+
+            invite_link = href if href.startswith("http") else "https://disboard.org" + href
+
+            tags = [t.text.strip() for t in card.select(".tag, .badge") if t.text.strip()]
+
+            servers.append({
+                "name": name_tag.text.strip() if name_tag else "No Name",
+                "description": desc_tag.text.strip() if desc_tag else "",
+                "invite": invite_link,
+                "tags": tags
+            })
+
         except Exception as e:
-            print("Detail fetch error:", e)
-            continue
+            print("Parse error:", e)
 
-        servers.append({
-            "name": name.text.strip() if name else "No Name",
-            "description": desc.text.strip() if desc else "",
-            "invite": invite,
-            "tags": [t.text.strip() for t in tags]
-        })
-
-        time.sleep(1) 
-
-    print("Fetched servers:", len(servers))
+    print("Servers parsed:", len(servers))
     return servers
