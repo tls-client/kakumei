@@ -34,4 +34,4 @@ ENV NODE_ENV=production
 EXPOSE 3000
 
 # アプリケーションを起動
-CMD ["node", "health-server.js"]
+CMD ["node", "simple-server.js"]
